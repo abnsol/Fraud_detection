@@ -109,3 +109,25 @@ print(f"ROC-AUC: {roc_auc_score(y_fraud_test, y_prob_rf_fraud):.4f}")
 lr_creditcard.fit(X_creditcard_train_res, y_creditcard_train_res)
 y_pred_lr_creditcard = lr_creditcard.predict(X_creditcard_test)
 y_prob_lr_creditcard = lr_creditcard.predict_proba(X_creditcard_test)[:, 1]
+
+print("Creditcard_Data Logistic Regression:")
+print("Confusion Matrix:\n", confusion_matrix(y_creditcard_test, y_pred_lr_creditcard))
+print("Classification Report:\n", classification_report(y_creditcard_test, y_pred_lr_creditcard))
+precision_lr_creditcard, recall_lr_creditcard, _ = precision_recall_curve(y_creditcard_test, y_prob_lr_creditcard)
+auc_pr_lr_creditcard = auc(recall_lr_creditcard, precision_lr_creditcard)
+print(f"AUC-PR: {auc_pr_lr_creditcard:.4f}")
+print(f"F1-Score: {f1_score(y_creditcard_test, y_pred_lr_creditcard):.4f}")
+print(f"ROC-AUC: {roc_auc_score(y_creditcard_test, y_prob_lr_creditcard):.4f}")
+
+rf_creditcard.fit(X_creditcard_train_res, y_creditcard_train_res)
+y_pred_rf_creditcard = rf_creditcard.predict(X_creditcard_test)
+y_prob_rf_creditcard = rf_creditcard.predict_proba(X_creditcard_test)[:, 1]
+
+print("Creditcard_Data Random Forest:")
+print("Confusion Matrix:\n", confusion_matrix(y_creditcard_test, y_pred_rf_creditcard))
+print("Classification Report:\n", classification_report(y_creditcard_test, y_pred_rf_creditcard))
+precision_rf_creditcard, recall_rf_creditcard, _ = precision_recall_curve(y_creditcard_test, y_prob_rf_creditcard)
+auc_pr_rf_creditcard = auc(recall_rf_creditcard, precision_rf_creditcard)
+print(f"AUC-PR: {auc_pr_rf_creditcard:.4f}")
+print(f"F1-Score: {f1_score(y_creditcard_test, y_pred_rf_creditcard):.4f}")
+print(f"ROC-AUC: {roc_auc_score(y_creditcard_test, y_prob_rf_creditcard):.4f}")
