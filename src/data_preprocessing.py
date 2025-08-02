@@ -52,3 +52,43 @@ print("Missing values after handling for IpAddress_to_Country.csv:\n", ip_to_cou
 print("\nProcessing creditcard.csv for missing values...")
 print("Missing values before handling:\n", creditcard_data.isnull().sum())
 print("Missing values after handling for creditcard.csv:\n", creditcard_data.isnull().sum())
+
+
+print("\n--- Removing Duplicate Rows ---")
+initial_rows_fraud = fraud_data.shape[0]
+fraud_data.drop_duplicates(inplace=True)
+print(f"Removed {initial_rows_fraud - fraud_data.shape[0]} duplicate rows from Fraud_Data.csv.")
+
+initial_rows_ip = ip_to_country.shape[0]
+ip_to_country.drop_duplicates(inplace=True)
+print(f"Removed {initial_rows_ip - ip_to_country.shape[0]} duplicate rows from IpAddress_to_Country.csv.")
+
+# creditcard.csv
+initial_rows_credit = creditcard_data.shape[0]
+creditcard_data.drop_duplicates(inplace=True)
+print(f"Removed {initial_rows_credit - creditcard_data.shape[0]} duplicate rows from creditcard.csv.")
+
+
+# --- 4. Data Cleaning - Correct Data Types ---
+print("\n--- Correcting Data Types ---")
+
+# Fraud_Data.csv
+fraud_data['signup_time'] = pd.to_datetime(fraud_data['signup_time'])
+fraud_data['purchase_time'] = pd.to_datetime(fraud_data['purchase_time'])
+print("Converted 'signup_time' and 'purchase_time' in Fraud_Data.csv to datetime.")
+
+fraud_data['ip_address_int'] = fraud_data['ip_address'].round().astype(int)
+print("Converted 'ip_address' in Fraud_Data.csv to integer format ('ip_address_int').")
+
+# IpAddress_to_Country.csv
+ip_to_country['lower_bound_ip_address'] = ip_to_country['lower_bound_ip_address'].astype(int)
+ip_to_country['upper_bound_ip_address'] = ip_to_country['upper_bound_ip_address'].astype(int)
+
+print("\n--- Final Data Info After Preprocessing Steps ---")
+fraud_data.info()
+ip_to_country.info()
+creditcard_data.info()
+
+print(fraud_data.head())
+print(ip_to_country.head())
+print(creditcard_data.head())
