@@ -111,3 +111,70 @@ for col in categorical_cols_fraud:
     plt.grid(axis='y', linestyle='--', alpha=0.6)
     plt.show()
     print(f"\nCrosstab for {col} vs. Class:\n", pd.crosstab(fraud_data[col], fraud_data['class']))
+
+
+# --- EDA for creditcard.csv ---
+print("\n--- EDA for Bank Transaction Fraud Data (creditcard.csv) ---")
+
+# Univariate Analysis
+print("\n1. Univariate Analysis for creditcard.csv:")
+print("\nDescriptive Statistics for Numerical Features (Time, Amount):")
+print(creditcard_data[['Time', 'Amount']].describe())
+
+# Distribution of 'Time'
+plt.figure(figsize=(12, 6))
+sns.histplot(creditcard_data['Time'], bins=100, kde=False)
+plt.title('Distribution of Time (creditcard.csv)')
+plt.xlabel('Time (seconds)')
+plt.ylabel('Frequency')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+# Distribution of 'Amount'
+plt.figure(figsize=(12, 6))
+sns.histplot(creditcard_data['Amount'], bins=100, kde=True)
+plt.title('Distribution of Amount (creditcard.csv)')
+plt.xlabel('Amount')
+plt.ylabel('Frequency')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+# Class Imbalance Check for creditcard.csv
+plt.figure(figsize=(7, 5))
+sns.countplot(data=creditcard_data, x='Class', palette='coolwarm')
+plt.title('Class Distribution (creditcard.csv)')
+plt.xlabel('Class (0: Non-Fraud, 1: Fraud)')
+plt.ylabel('Count')
+plt.xticks([0, 1], ['Non-Fraud (0)', 'Fraud (1)'])
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+plt.show()
+print("\nClass distribution for creditcard.csv:\n", creditcard_data['Class'].value_counts(normalize=True))
+
+
+# Bivariate Analysis for creditcard.csv
+print("\n2. Bivariate Analysis for creditcard.csv:")
+
+# Amount vs. Class
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=creditcard_data, x='Class', y='Amount', palette='pastel')
+plt.title('Transaction Amount vs. Class (creditcard.csv)')
+plt.xlabel('Class (0: Non-Fraud, 1: Fraud)')
+plt.ylabel('Amount')
+plt.xticks([0, 1], ['Non-Fraud', 'Fraud'])
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+plt.show()
+
+# Time vs. Class (using KDE plot for density comparison)
+plt.figure(figsize=(12, 6))
+sns.kdeplot(data=creditcard_data, x='Time', hue='Class', fill=True, common_norm=False, palette='viridis')
+plt.title('Time Distribution by Class (creditcard.csv)')
+plt.xlabel('Time (seconds)')
+plt.ylabel('Density')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+correlation_matrix = creditcard_data.drop(columns=['Time', 'Class']).corr()
+plt.figure(figsize=(16, 14))
+sns.heatmap(correlation_matrix, annot=False, cmap='coolwarm', fmt=".2f", linewidths=.5)
+plt.title('Correlation Matrix of V Features and Amount (creditcard.csv)')
+plt.show()
