@@ -79,3 +79,51 @@ The primary objective of Task 1 is to prepare raw transaction data for machine l
 - **Encode Categorical Features:**
   - `Fraud_Data.csv`: OneHotEncoder for categorical features before/after SMOTE as appropriate.
   - `creditcard.csv`: No categorical encoding required.
+
+
+## Task 2: Model Building and Training
+
+**Objective:**  
+Implement and compare two classification models to detect fraudulent transactions, identifying the best-performing model for each dataset using appropriate metrics for imbalanced classes.
+
+**Models Compared:**
+- **Logistic Regression:** Simple, interpretable baseline
+- **Random Forest Classifier:** Ensemble method, robust to non-linearities and feature interactions
+
+Both models used `class_weight='balanced'` to mitigate class imbalance.
+
+**Workflow:**
+- Load preprocessed datasets (`Fraud_Data_merged.csv`, `creditcard_cleaned.csv`)
+- Stratified train-test split (70-30)
+- Imbalance handling (SMOTE for e-commerce, random undersampling for bank data)
+- Scaling and encoding as required
+- Train both models on resampled training data
+- Evaluate on untouched test data using AUC-PR, F1-Score, ROC-AUC, and confusion matrix
+
+**Results Summary:**
+
+| Metric          | Logistic Regression | Random Forest |
+|-----------------|--------------------|--------------|
+|         **E-commerce (Fraud_Data.csv)**         |                    |              |
+| AUC-PR          | 0.1192             | 0.5588       |
+| F1-Score        | 0.1792             | 0.6591       |
+| ROC-AUC         | 0.5560             | 0.7676       |
+| Precision       | 0.11               | 0.86         |
+| Recall          | 0.51               | 0.54         |
+|         **Bank Transactions (creditcard.csv)**         |                    |              |
+| AUC-PR          | 0.3401             | 0.7395       |
+| F1-Score        | 0.0868             | 0.0889       |
+| ROC-AUC         | 0.9626             | 0.9742       |
+| Precision       | 0.05               | 0.05         |
+| Recall          | 0.88               | 0.88         |
+
+**Model Selection Justification:**
+
+- **E-commerce:**  
+  The Random Forest Classifier significantly outperformed Logistic Regression in both AUC-PR and F1-Score, demonstrating a much better balance between precision and recall for fraud detection. Its high precision (0.86) is especially valuable for minimizing false positives.
+
+- **Bank Transactions:**  
+  Random Forest again achieved a much higher AUC-PR (0.7395 vs 0.3401) than Logistic Regression, indicating better probability ranking. While F1-scores and precision were similar, Random Forest's higher AUC-PR suggests better performance with threshold tuning.
+
+**Conclusion:**  
+In both scenarios, the Random Forest Classifier is considered the best-performing model. Its ensemble nature allows it to capture complex patterns and handle imbalanced data more effectively, as reflected in superior AUC-PR and F1-scores.
